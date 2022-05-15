@@ -1,10 +1,9 @@
-from rest_framework.request import Request
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from scrape_base.views.base import BasePostAPIView
+from scrape_product.product.product import ScrapeProductAPI
+from scrape_product.serializers.product import ScrapeProductInputSerializer
 
 
-class ScrapeProductAPIView(APIView):
-    def post(self, request: Request) -> Response:
-        output = dict()
-        output['status'] = 201
-        return Response(**output)
+class ScrapeProductAPIView(BasePostAPIView):
+    api_class = ScrapeProductAPI
+    serializer_class = ScrapeProductInputSerializer
+    disable_serializer_class = False
