@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from bs4 import BeautifulSoup
 
 from scrape_base.base.api import BasePostAPI
@@ -16,11 +18,21 @@ class ScrapeProductAPI(BasePostAPI):
         url = self.api_payload().get('scrape_url')
         page = requests.get(url)
 
-        soup = BeautifulSoup(page.content, "html.parser")
-        images = [img for img in soup.findAll('img')]
-        print(str(len(images)) + " images found.")
-        print([i for i in images])
-        image_links = [each.get('src') for each in images]
+        soup = BeautifulSoup(page.text, "html.parser")
+        products = soup.find_all('span', attrs={'images-two'})
+
+        image_links = []
+        image_path = settings.IMAGE_SAVE_PATH
+        num = 1
+        for tag in products:
+            image_links.append(tag.img['data-srcset'])
+            link = tag.img['data-srcset']
+            name = 'image' + str(num)
+            num += 1
+            with open(image_path + name + '.jpg', 'wb') as f:
+                im = requests.get('https:' + link)
+                f.write(im.content)
+
         output = {
             'url': {
                 'link': url,

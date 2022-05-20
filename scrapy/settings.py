@@ -9,11 +9,24 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import os
 
+import environ
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
+env_file_path = os.path.join(BASE_DIR, '.env')
+
+environ.Env.read_env(env_file_path)
+
+IMAGE_SAVE_PATH = env.str("IMAGE_SAVE_PATH", "/Users/kayes/Image/")
 
 
 # Quick-start development settings - unsuitable for production
