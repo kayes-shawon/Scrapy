@@ -1,3 +1,5 @@
+import os
+
 from django.conf import settings
 
 from bs4 import BeautifulSoup
@@ -29,9 +31,15 @@ class ScrapeProductAPI(BasePostAPI):
             link = tag.img['data-srcset']
             name = 'image' + str(num)
             num += 1
-            with open(image_path + name + '.jpg', 'wb') as f:
-                im = requests.get('https:' + link)
-                f.write(im.content)
+            try:
+                with open(image_path + name + '.jpg', 'wb') as f:
+                    im = requests.get('https:' + link)
+                    f.write(im.content)
+            except FileNotFoundError:
+                os.mkdir(image_path)
+                with open(image_path + name + '.jpg', 'wb') as f:
+                    im = requests.get('https:' + link)
+                    f.write(im.content)
 
         output = {
             'url': {
