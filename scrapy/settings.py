@@ -28,6 +28,13 @@ environ.Env.read_env(env_file_path)
 
 IMAGE_SAVE_PATH = env.str("IMAGE_SAVE_PATH", "/Users/kayes/Image/")
 
+MASTER_DB_NAME = env.str('MASTER_DB_NAME')
+MASTER_DB_USER = env.str('MASTER_DB_USER')
+MASTER_DB_HOST = env.str('MASTER_DB_HOST')
+MASTER_DB_PORT = env.str('MASTER_DB_PORT')
+MASTER_DB_PASSWORD = env.str('MASTER_DB_PASSWORD')
+MASTER_DB_OPTIONS = env.dict('MASTER_DB_OPTIONS')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -93,13 +100,22 @@ WSGI_APPLICATION = 'scrapy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': MASTER_DB_NAME,
+        'USER': MASTER_DB_USER,
+        'HOST': MASTER_DB_HOST,
+        'PORT': MASTER_DB_PORT,
+        'PASSWORD': MASTER_DB_PASSWORD,
+        'ENGINE': 'django.db.backends.postgresql',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -138,3 +154,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# REST FRAMEWORK SETTINGS #
+REST_FRAMEWORK = {
+
+    'DATE_FORMAT': 'iso-8601',
+    'TIME_FORMAT': 'iso-8601',
+    'DATETIME_FORMAT': 'iso-8601',
+    'DATETIME_INPUT_FORMATS': ['iso-8601'],
+    'TIME_INPUT_FORMATS': ['iso-8601'],
+}
+# REST FRAMEWORK SETTINGS END #
+
