@@ -26,7 +26,7 @@ env_file_path = os.path.join(BASE_DIR, '.env')
 
 environ.Env.read_env(env_file_path)
 
-IMAGE_SAVE_PATH = env.str("IMAGE_SAVE_PATH", "/Users/kayes/Image/")
+IMAGE_SAVE_PATH = env.str("IMAGE_SAVE_PATH")
 
 MASTER_DB_NAME = env.str('MASTER_DB_NAME')
 MASTER_DB_USER = env.str('MASTER_DB_USER')
@@ -34,7 +34,6 @@ MASTER_DB_HOST = env.str('MASTER_DB_HOST')
 MASTER_DB_PORT = env.str('MASTER_DB_PORT')
 MASTER_DB_PASSWORD = env.str('MASTER_DB_PASSWORD')
 MASTER_DB_OPTIONS = env.dict('MASTER_DB_OPTIONS')
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -46,7 +45,6 @@ SECRET_KEY = '+d^3m%nvuh9&a$=v4(y2b8x#cfijw)_@-(xe2_5@zp-l45r4wp'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -96,7 +94,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'scrapy.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -135,20 +132,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
+LANGUAGE_CODE = env.str('LANGUAGE_CODE')
+TIME_ZONE = env.str('TIME_ZONE')
+USE_I18N = env.bool('USE_I18N')
+USE_L10N = env.bool('USE_L10N')
+USE_TZ = env.bool('USE_TZ')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -166,3 +156,10 @@ REST_FRAMEWORK = {
 }
 # REST FRAMEWORK SETTINGS END #
 
+# CELERY STUFF
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Dhaka'
