@@ -18,7 +18,9 @@ class ProductImage(models.Model):
     Product image model
     """
     id = models.BigAutoField(primary_key=True, verbose_name="Product Id")
-    scrape_url = models.CharField(max_length=250, verbose_name='Scrape url')
+    original_url = models.CharField(max_length=250, default="", verbose_name='Original url')
+    scrape_url = models.CharField(max_length=250, default="", verbose_name='Scrape url')
+    product_url = models.CharField(max_length=250, default="", verbose_name='Product url')
     original_size = models.CharField(max_length=100, verbose_name='Original size')
     alt_data = models.CharField(max_length=100, verbose_name='Alt data')
     updated_at = models.DateTimeField(default=timezone.now,

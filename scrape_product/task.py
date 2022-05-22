@@ -22,21 +22,21 @@ def product_scraping(url):
     image_path = settings.IMAGE_SAVE_PATH
     num = 1
     for tag in products:
-        link = tag.img['data-srcset']
+        link = 'https:' + tag.img['data-srcset']
         image_size = '300px'
         alt_data = tag.img['alt']
-        product_image.append(ProductImage(scrape_url=url, original_size=image_size, alt_data=alt_data))
+        product_image.append(ProductImage(scrape_url=url, original_url=link, original_size=image_size, alt_data=alt_data))
 
         name = 'image' + str(num)
         num += 1
         try:
             with open(image_path + name + '.jpg', 'wb') as f:
-                im = requests.get('https:' + link)
+                im = requests.get(link)
                 f.write(im.content)
         except FileNotFoundError:
             os.mkdir(image_path)
             with open(image_path + name + '.jpg', 'wb') as f:
-                im = requests.get('https:' + link)
+                im = requests.get(link)
                 f.write(im.content)
 
     ProductImage.objects.bulk_create(product_image)
