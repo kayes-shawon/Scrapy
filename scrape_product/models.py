@@ -7,9 +7,9 @@ from django.db.models import Manager
 class ProductImageManager(Manager):
     def create_product(self, **kwargs):
         return self.create(
-            title=kwargs.get('full_name'),
-            status=kwargs.get('cif_status'),
-            parent=kwargs.get('parent_cif', 0),
+            scrape_url=kwargs.get('url'),
+            original_size=kwargs.get('image_size'),
+            alt_data=kwargs.get('alt', ''),
         )
 
 
@@ -17,8 +17,8 @@ class ProductImage(models.Model):
     """
     Product image model
     """
-    id = models.CharField(max_length=26, primary_key=True, verbose_name="id")
-    scrape_url = models.CharField(max_length=250, unique=True, verbose_name='Scrape url')
+    id = models.BigAutoField(primary_key=True, verbose_name="Product Id")
+    scrape_url = models.CharField(max_length=250, verbose_name='Scrape url')
     original_size = models.CharField(max_length=100, verbose_name='Original size')
     alt_data = models.CharField(max_length=100, verbose_name='Alt data')
     updated_at = models.DateTimeField(default=timezone.now,

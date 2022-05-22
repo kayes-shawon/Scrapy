@@ -1,4 +1,3 @@
-# from celery.decorators import task
 import os
 
 import requests
@@ -6,6 +5,8 @@ from bs4 import BeautifulSoup
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from django.conf import settings
+
+from scrape_product.models import ProductImage
 
 logger = get_task_logger(__name__)
 
@@ -17,12 +18,15 @@ def product_scraping(url):
     soup = BeautifulSoup(page.text, "html.parser")
     products = soup.find_all('span', attrs={'images-two'})
 
-    image_links = []
+    product_image = []
     image_path = settings.IMAGE_SAVE_PATH
     num = 1
     for tag in products:
-        image_links.append(tag.img['data-srcset'])
         link = tag.img['data-srcset']
+        image_size = '300px'
+        alt_data = tag.img['alt']
+        product_image.append(ProductImage(scrape_url=url, original_size=image_size, alt_data=alt_data))
+
         name = 'image' + str(num)
         num += 1
         try:
@@ -35,4 +39,5 @@ def product_scraping(url):
                 im = requests.get('https:' + link)
                 f.write(im.content)
 
+    ProductImage.objects.bulk_create(product_image)
     return 'first_task_done'
