@@ -1,6 +1,7 @@
 import os
 
 import requests
+import ulid
 from bs4 import BeautifulSoup
 from celery import shared_task
 from celery.utils.log import get_task_logger
@@ -20,24 +21,26 @@ def product_scraping(url):
 
     product_image = []
     image_path = settings.IMAGE_SAVE_PATH
-    num = 1
+
     for tag in products:
+        image_id = ulid.new().str
         link = 'https:' + tag.img['data-srcset']
         image_size = '300px'
         alt_data = tag.img['alt']
-        product_image.append(ProductImage(scrape_url=url, original_url=link, original_size=image_size, alt_data=alt_data))
-
-        name = 'image' + str(num)
-        num += 1
+        product_url = image_path + 'image' + image_id + '.jpg'
+        product_image.append(
+            ProductImage(scrape_url=url, product_url=product_url, original_url=link,
+                         original_size=image_size, alt_data=alt_data)
+        )
         try:
-            with open(image_path + name + '.jpg', 'wb') as f:
+            with open(product_url, 'wb') as f:
                 im = requests.get(link)
                 f.write(im.content)
         except FileNotFoundError:
             os.mkdir(image_path)
-            with open(image_path + name + '.jpg', 'wb') as f:
+            with open(product_url, 'wb') as f:
                 im = requests.get(link)
                 f.write(im.content)
 
     ProductImage.objects.bulk_create(product_image)
-    return 'first_task_done'
+    return 'image scraping task done'
