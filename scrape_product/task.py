@@ -27,7 +27,7 @@ def product_scraping(url):
         link = 'https:' + tag.img['data-srcset']
         image_size = '300px'
         alt_data = tag.img['alt']
-        product_url = image_path + 'image' + image_id + '.jpg'
+        product_url = image_path + image_id + '.jpg'
         product_image.append(
             ProductImage(scrape_url=url, product_url=product_url, original_url=link,
                          original_size=image_size, alt_data=alt_data)

@@ -14,12 +14,5 @@ class ScrapeProductAPI(BasePostAPI):
     def process(self) -> tuple:
         url = self.api_payload().get('scrape_url')
         product_scraping.delay(url)
-        output = {
-            'url': {
-                'link': url,
-            },
-            'products': {
-                'id': 1
-            },
-        }
+        output = {}
         return product_code.PRODUCT_SCRAPE_SUCCESS, output

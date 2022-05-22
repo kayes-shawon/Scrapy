@@ -1,3 +1,5 @@
+from django.utils.translation import get_language_from_request
+
 from .code import CodeObject
 
 
@@ -7,14 +9,6 @@ def http_status_code(code: CodeObject) -> int:
 
 def state_code(code: CodeObject) -> str:
     return code.state_code()
-
-
-def state_message(code: CodeObject, language: str = 'en') -> str:
-    data: dict = code.state_message()
-    if language in data:
-        return data.get(language).format(**code.state_message_params())
-    else:
-        return data.get('en', '').format(**code.state_message_params())
 
 
 def formatted_output_error(code: CodeObject) -> dict:

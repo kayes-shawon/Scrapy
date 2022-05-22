@@ -12,6 +12,19 @@ class ProductImageManager(Manager):
             alt_data=kwargs.get('alt', ''),
         )
 
+    @staticmethod
+    def get_products(request_data) -> list:
+        output = []
+        for p in request_data:
+            product_dict = dict()
+            product_dict['image_id'] = p.id
+            product_dict['original_url'] = p.original_url
+            product_dict['scrape_url'] = p.scrape_url
+            product_dict['alt_data'] = p.alt_data
+            product_dict['product_url'] = p.product_url
+            output.append(product_dict)
+        return output
+
 
 class ProductImage(models.Model):
     """
