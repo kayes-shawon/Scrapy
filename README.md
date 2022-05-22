@@ -20,7 +20,7 @@ python manage.py migrate
 ```
 8. Once all of the above command run sucessfully, We are ready to go. Start server by executing command.
 ```
-python manage.py runserver
+make run
 ```
 -------------------------------
 ### Async Setup
