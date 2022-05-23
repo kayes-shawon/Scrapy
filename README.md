@@ -30,3 +30,8 @@ make run
 ```
 make celery
 ```
+-----------------------------------
+# Scrape Url:
+```
+https://www.batabd.com
+```
